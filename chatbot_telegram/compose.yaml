@@ -1,0 +1,61 @@
+name: telebot-integrador
+
+services:
+  bot:
+    build: .
+    restart: "no"
+    init: true
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?Configura TELEGRAM_BOT_TOKEN}
+      ADMIN_CHAT_IDS: ${ADMIN_CHAT_IDS:-}
+      ADMIN_CHAT_ID: ${ADMIN_CHAT_ID:-}
+      ALLOWED_USER_IDS: ${ALLOWED_USER_IDS:-}
+      ACCESO_PUBLICO: ${ACCESO_PUBLICO:-True}
+      DB_HOST: postgres
+      DB_NAME: telebot
+      DB_USER: telebot_app
+      DB_PASSWORD: ${DB_APP_PASSWORD:?Configura DB_APP_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: telebot
+      POSTGRES_USER: telebot
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configura POSTGRES_PASSWORD}
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD:?Configura DB_APP_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./provision.sql:/opt/telebot/provision.sql:ro
+      - ./init-app.sh:/docker-entrypoint-initdb.d/01-app.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U telebot -d telebot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  pgadmin:
+    image: dpage/pgadmin4:9
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@telebot.com
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:?Configura PGADMIN_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: "True"
+    ports:
+      - "127.0.0.1:5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin-servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  pgadmin_data:

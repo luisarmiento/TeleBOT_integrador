@@ -1,0 +1,104 @@
+erDiagram
+    asesores {
+        BIGINT id PK
+    }
+    catalogo {
+        INTEGER id PK
+        VARCHAR_30 categoria
+        VARCHAR_100 nombre
+        TEXT descripcion
+        NUMERIC_12__2 precio
+        BOOLEAN requiere_direccion
+    }
+    clientes {
+        BIGINT id PK
+        VARCHAR_8 dni UK
+        VARCHAR_200 nombre
+        VARCHAR_9 telefono
+        DATETIME creado
+    }
+    contactos {
+        BIGINT id PK
+        VARCHAR_200 nombre
+        DATETIME creado
+    }
+    equipos {
+        INTEGER id PK
+        VARCHAR_100 nombre
+        NUMERIC_12__2 precio
+    }
+    planes {
+        INTEGER id PK
+        VARCHAR_100 nombre
+        NUMERIC_12__2 precio
+        TEXT descripcion
+    }
+    conversaciones {
+        INTEGER id PK
+        BIGINT chat_id FK
+        VARCHAR_30 estado
+        DATETIME inicio
+        DATETIME fin
+    }
+    lineas {
+        INTEGER id PK
+        BIGINT cliente_id FK
+        VARCHAR_30 numero UK
+        INTEGER plan_id FK
+        BOOLEAN activa
+    }
+    sesiones {
+        BIGINT chat_id PK,FK
+        JSON datos
+    }
+    solicitudes {
+        INTEGER id PK
+        BIGINT cliente_id FK
+        VARCHAR_30 tipo
+        JSON datos
+        BIGINT chat_id
+        VARCHAR_36 operacion UK
+        VARCHAR_30 estado
+        BIGINT asesor_id FK
+        DATETIME fecha
+    }
+    asignaciones {
+        INTEGER id PK
+        INTEGER conversacion_id FK
+        BIGINT asesor_id FK
+        DATETIME inicio
+        DATETIME fin
+    }
+    deudas {
+        INTEGER id PK
+        INTEGER linea_id FK
+        NUMERIC_12__2 importe
+        VARCHAR_10 vencimiento
+        BOOLEAN pagada
+    }
+    historial_solicitudes {
+        INTEGER id PK
+        INTEGER solicitud_id FK
+        VARCHAR_30 estado
+        BIGINT responsable_id
+        DATETIME fecha
+    }
+    mensajes {
+        INTEGER id PK
+        INTEGER conversacion_id FK
+        BIGINT autor_id
+        VARCHAR_20 rol
+        TEXT texto
+        DATETIME fecha
+    }
+    contactos ||--o{ conversaciones : chat_id
+    clientes ||--o{ lineas : cliente_id
+    planes ||--o{ lineas : plan_id
+    contactos ||--o| sesiones : chat_id
+    asesores o|--o{ solicitudes : asesor_id
+    clientes ||--o{ solicitudes : cliente_id
+    asesores ||--o{ asignaciones : asesor_id
+    conversaciones ||--o{ asignaciones : conversacion_id
+    lineas ||--o{ deudas : linea_id
+    solicitudes ||--o{ historial_solicitudes : solicitud_id
+    conversaciones ||--o{ mensajes : conversacion_id

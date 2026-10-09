@@ -1,0 +1,41 @@
+{
+  "fecha_utc": "2026-10-09T03:01:39Z",
+  "version_documento": "3.0",
+  "pruebas": {
+    "flujo": 15,
+    "postgresql": 7,
+    "total": 22,
+    "duracion_s": 4.381,
+    "resultado": "OK"
+  },
+  "migracion": {
+    "revision": "002",
+    "actualizacion_base_existente": "OK",
+    "instalacion_desde_cero": "OK",
+    "diferencias_con_modelo": 0
+  },
+  "carga_telebot": {
+    "clientes": 15,
+    "lineas": 30,
+    "numeros_unicos": 30,
+    "dni_desde": "00001001",
+    "dni_hasta": "00001015",
+    "lineas_demo_antiguas": 0
+  },
+  "rendimiento": {
+    "python": "3.14.8",
+    "base": "telebot_test",
+    "chats_simulados": 50,
+    "actualizaciones_secuenciales": 300,
+    "contactos_guardados": 50,
+    "mensajes_guardados": 600,
+    "clientes_guardados": 15,
+    "duracion_s": 8.03,
+    "media_ms": 25.65,
+    "p95_ms": 29.416,
+    "max_ms": 34.094,
+    "objetivo_p95_ms": 1000,
+    "cumple_objetivo_local": true,
+    "alcance": "Telegram simulado; PostgreSQL real; carga secuencial, una instancia; no prueba de concurrencia ni SLA real."
+  }
+}

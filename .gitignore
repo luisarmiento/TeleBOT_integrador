@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+!.env.*.example
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.log
+*.dump
+*.sql.gz
+respaldos/
+~$*
+.DS_Store
+Thumbs.db
+.pytest_cache/

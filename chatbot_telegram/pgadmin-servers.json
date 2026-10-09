@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "TeleBOT PostgreSQL",
+      "Group": "TeleBOT Integrador",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "telebot",
+      "Username": "telebot",
+      "SSLMode": "prefer"
+    }
+  }
+}
